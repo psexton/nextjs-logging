@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { log } from '@/lib/logger';
 
 export function middleware(req: NextRequest) {
-  // Extract IP address from headers (best effort)
-  const ip = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
+  const ip =
+    req.headers.get('x-forwarded-for') ||
+    req.headers.get('cf-connecting-ip') ||
+    'unknown';
 
-  log('info', `Incoming request: ${req.method} ${req.nextUrl.pathname}`, {
+  log('info', 'Incoming request', {
+    method: req.method,
+    path: req.nextUrl.pathname,
     ip,
     userAgent: req.headers.get('user-agent'),
   });
@@ -14,5 +18,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: '/api/:path*', // Apply middleware only to API routes
+  matcher: '/api/:path*',
 };
