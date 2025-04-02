@@ -33,8 +33,14 @@ const edgeRuntimeConfig: LoggerOptions = {
         write: (logObj) => { 
             // Take in the log obj and recast it to a Record so we can add fields to it,
             // replicating what we do with bindings in the nodeRuntimeConfig
+            const activeSpan = trace.getSpan(context.active());
+            const traceId = activeSpan?.spanContext().traceId ?? "unknown";
+            const spanId = activeSpan?.spanContext().spanId ?? "unknown";
+
             const logEntry = logObj as Record<string, string>
             logEntry.runtime = process.env.NEXT_RUNTIME ?? "unknown"
+            logEntry.traceId = traceId
+            logEntry.spanId = spanId
             console.log(JSON.stringify(logEntry)) 
         },
     },
