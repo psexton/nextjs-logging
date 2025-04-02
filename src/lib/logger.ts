@@ -1,4 +1,5 @@
 import pino, { Logger, LoggerOptions } from "pino";
+import { trace, context } from "@opentelemetry/api"
 
 const nodeRuntimeConfig: LoggerOptions = {
     formatters: {
@@ -46,4 +47,10 @@ export const logger: Logger =
         level: process.env.PINO_LOG_LEVEL || "debug",
         // Use ISO8601 timestamp instead of unix epoch
         timestamp: pino.stdTimeFunctions.isoTime,
+        mixin: () => {
+            const activeSpan = trace.getSpan(context.active());
+            const traceId = activeSpan?.spanContext().traceId ?? "unknown";
+            const spanId = activeSpan?.spanContext().spanId ?? "unknown";
+            return { traceId, spanId, }
+        }
     });
