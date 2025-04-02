@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { log } from '@/lib/logger';
+import { logger } from '@/lib/logger';
 
 export function middleware(req: NextRequest) {
   const ip =
@@ -7,7 +7,7 @@ export function middleware(req: NextRequest) {
     req.headers.get('cf-connecting-ip') ||
     'unknown';
 
-  log('info', 'Incoming request', {
+  logger.info('Incoming request', {
     method: req.method,
     path: req.nextUrl.pathname,
     ip,
