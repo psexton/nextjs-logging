@@ -27,6 +27,10 @@ const nodePinoConfig = {
     },
 }
 
+// Pino doesn't seem to work great with NextJS's edge runtime,
+// so this is a crude workaround that mostly sorta works.
+// BUG: Any extra params passed to the log message are dropped.
+// See: <https://github.com/vercel/next.js/discussions/33898>
 const edgePinoConfig = {
     browser: {
         asObject: true,
