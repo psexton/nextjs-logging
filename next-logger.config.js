@@ -50,7 +50,10 @@ const edgePinoConfig = {
             logEntry.runtime = process.env.NEXT_RUNTIME ?? "unknown"
             logEntry.traceId = traceId
             logEntry.spanId = spanId
-            console.log(JSON.stringify(logEntry)) 
+            
+            // Don't stringify the object - just pass it directly to console.log
+            // Next.js will handle the serialization properly
+            console.log(logEntry) 
         },
     },
 }
